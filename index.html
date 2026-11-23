@@ -477,7 +477,7 @@
   </main>
 
   <footer class="wrap footer">
-    個人の学習用ノートです。教科書の例文と短い引用を含むため、本人以外は見られない設定で運用します。
+    個人の学習用ノートです。
   </footer>
 
   <script>
@@ -503,6 +503,34 @@
       }
       q.addEventListener('input', filter);
       filter();
+      // 学習済みチェック（このブラウザの localStorage に保存）
+      const KEY = 'giu:done';
+      let done = {};
+      try { done = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) {}
+      const prog = document.createElement('span');
+      prog.className = 'progress';
+      count.after(prog);
+      function showProg() {
+        const n = items.filter((li) => done[li.querySelector('.num').textContent.trim()]).length;
+        prog.textContent = '学習済み ' + n + ' / ' + items.length;
+      }
+      items.forEach((li) => {
+        const id = li.querySelector('.num').textContent.trim();
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.className = 'done';
+        cb.setAttribute('aria-label', 'Unit ' + id + ' を学習済みにする');
+        cb.checked = !!done[id];
+        li.classList.toggle('is-done', cb.checked);
+        cb.addEventListener('change', () => {
+          if (cb.checked) done[id] = 1; else delete done[id];
+          li.classList.toggle('is-done', cb.checked);
+          try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) {}
+          showProg();
+        });
+        li.prepend(cb);
+      });
+      showProg();
     })();
   </script>
 </body>

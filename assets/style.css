@@ -268,3 +268,10 @@ blockquote.tb cite { display: block; font-style: normal; font-size: .78rem; colo
 /* 締めの一言（太字）と補足の段落 */
 .panel p.takeaway { font-weight: 700; margin-top: 2.6rem; }
 .card.rank .item:first-of-type .tag { background: var(--ink); color: var(--paper); }
+
+/* 学習済みチェック */
+.units li { display: flex; align-items: center; }
+.units li > a { flex: 1 1 0; min-width: 0; }
+.units .done { flex: 0 0 auto; width: 1.05rem; height: 1.05rem; margin: 0 4px 0 6px; accent-color: #4ade80; cursor: pointer; }
+.units li.is-done .title, .units li.is-done .num { opacity: .45; }
+.progress { margin-left: 12px; font-size: .78rem; color: var(--ink-2); }

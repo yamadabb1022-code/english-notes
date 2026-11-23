@@ -1,0 +1,270 @@
+/* Layout: スマホ前提の1カラム講義ノート。ユニットページは「概要・Section A・B…」をタブで切り替える。
+   色の意味（青・紫・緑・橙・赤）は図とテストの中だけで使う。本文と画面の枠は無彩色寄りのインク色。 */
+:root {
+  --paper: #000000;
+  --surface: #000000;
+  --ink: #e8eaef;
+  --ink-2: #a0a7b5;
+  --line: #2a2e38;
+  --chrome: #c9d1e4;
+  --chrome-ink: #000000;
+  --chrome-soft: #1a1d25;
+  /* 図・テストで使う意味の色（ユニットごとに意味を割り当てる） */
+  --blue: #7fa8ff;
+  --purple: #c39dff;
+  --green: #5cc58f;
+  --orange: #ffaa5c;
+  --red: #ff8a7f;
+  --ok-bg: #12301d;
+  --ng-bg: #3a1c1a;
+  --mark: rgba(255, 214, 90, .30);
+  --font: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "YuGothic", "Meiryo", sans-serif;
+  --font-num: "Space Grotesk", var(--font);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { font-size: 106.25%; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font); line-height: 1.8; }
+a { color: var(--chrome); }
+:focus-visible { outline: 2px solid var(--chrome); outline-offset: 2px; border-radius: 4px; }
+.wrap {
+  max-width: 52rem; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3, h4 { text-wrap: balance; line-height: 1.4; }
+.eyebrow { font-family: var(--font-num); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
+
+/* ---------- top bar ---------- */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+.topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+.topbar .wrap { display: flex; align-items: center; gap: 12px; min-height: 52px; }
+.topbar .back { text-decoration: none; font-weight: 700; font-size: .9rem; }
+.topbar .where { font-family: var(--font-num); font-weight: 700; color: var(--ink-2); font-size: .9rem; }
+.topbar .spacer { flex: 1; }
+.pager { display: flex; gap: 6px; }
+.pager a, .pager span {
+  font-family: var(--font-num); font-size: .85rem; text-decoration: none; line-height: 1;
+  border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; color: var(--ink); background: var(--surface);
+}
+.pager span { color: var(--line); }
+
+/* ---------- index page ---------- */
+.masthead { padding-block: 2.5rem 1.5rem; }
+.masthead h1 { font-size: clamp(1.7rem, 6vw, 2.3rem); margin: .2rem 0 .4rem; }
+.masthead p { margin: 0; color: var(--ink-2); }
+.search { display: flex; gap: 10px; align-items: center; margin: 1.25rem 0 .5rem; }
+.search input { flex: 1; min-width: 0; font: inherit; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.count { font-family: var(--font-num); font-size: .85rem; color: var(--ink-2); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.group-title { font-size: .72rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); margin: 1.6rem 0 .3rem; }
+.units { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.units li { border-bottom: 1px solid var(--line); }
+.units a { display: flex; align-items: baseline; gap: 12px; padding: 7px 4px; text-decoration: none; color: var(--ink); white-space: nowrap; }
+.units a:hover { background: var(--chrome-soft); }
+.units .num { flex: 0 0 1.9rem; font-family: var(--font-num); font-size: .85rem; font-weight: 500; color: var(--ink-2); font-variant-numeric: tabular-nums; text-align: right; }
+.units .title { flex: 0 1 auto; font-size: .92rem; font-weight: 500; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.units .meta { flex: 1 1 0; display: flex; gap: 10px; align-items: center; justify-content: space-between; color: var(--ink-2); font-size: .78rem; min-width: 0; }
+.units .sum { flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.units .chips { flex: 0 0 auto; }
+@media (max-width: 640px) { .units .sum { display: none; } .units .meta { flex: 0 0 auto; } .units .title { flex: 1 1 0; } }
+.chips { display: inline-flex; gap: 3px; }
+.chips b { font-family: var(--font-num); font-size: .62rem; font-weight: 500; width: 1.1rem; height: 1.1rem; display: inline-grid; place-items: center; border-radius: 4px; background: var(--chrome-soft); color: var(--ink); }
+.empty { border: 1px dashed var(--line); border-radius: 12px; padding: 1.5rem; margin-top: 1rem; color: var(--ink-2); background: var(--surface); }
+.empty strong { color: var(--ink); }
+.footer { padding-block: 3rem; color: var(--ink-2); font-size: .8rem; }
+
+/* ---------- unit page ---------- */
+.unit-head { padding-block: 1.6rem .9rem; }
+.unit-head .no { font-family: var(--font-num); font-weight: 700; color: var(--ink-2); letter-spacing: .04em; }
+.unit-head h1 { font-size: clamp(1.45rem, 5.5vw, 2rem); margin: .1rem 0 0; }
+
+.tabs { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 53px); z-index: 4; background: var(--paper); border-bottom: 2px solid var(--chrome); }
+.tabs .wrap { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; padding-top: 8px; }
+.tabs .wrap::-webkit-scrollbar { display: none; }
+.tab {
+  flex: 0 0 auto; font: inherit; font-size: .88rem; font-weight: 700; color: var(--ink-2); cursor: pointer;
+  border: 1px solid var(--line); border-bottom: 0; border-radius: 8px 8px 0 0; background: var(--surface); padding: 6px 14px 7px;
+}
+.tab[aria-selected="true"] { background: var(--chrome); color: var(--chrome-ink); border-color: var(--chrome); }
+
+/* 講義本文: 大見出し h2 / 中見出し h3 / 小見出し h4 */
+.panel { padding-block: 1.4rem 2.5rem; }
+.panel h2 { font-size: 1.45rem; margin: 0; }
+.panel h2 + h3.topic { margin-top: .2rem; font-size: 1.15rem; border: 0; padding: 0; }
+.panel .scope { margin: .3rem 0 1.2rem; font-weight: 700; }
+.panel h3 { font-size: 1.32rem; margin: 4rem 0 1.1rem; padding-bottom: .35rem; border-bottom: 2px solid var(--line); }
+.panel h2 + h3.topic { border-bottom: 0; }
+.panel h4 { font-size: 1rem; margin: 2.6rem 0 .6rem; }
+.panel p { margin: 1.2rem 0; }
+.panel ul, .panel ol { padding-left: 1.4em; margin: .5rem 0; }
+.panel li { margin: .45rem 0; }
+.en { font-weight: 700; }
+p.en { font-size: 1.06rem; margin-bottom: .1rem; }
+p.en + p.ja { margin-top: 0; }
+p.ja + p.memo, p.ja + p.tb-note { margin-top: -.4rem; }
+.ja { color: var(--ink); }
+.memo { color: var(--ink-2); font-size: .9rem; }
+.rule, .formula { font-weight: 700; }
+.formula { font-size: 1.06rem; }
+
+/* 教科書の引用 */
+blockquote.tb { margin: .8rem 0; padding: .5rem 0 .5rem 1rem; border-left: 3px solid var(--ink-2); color: var(--ink); }
+blockquote.tb p { margin: 0; }
+blockquote.tb cite { display: block; font-style: normal; font-size: .78rem; color: var(--ink-2); margin-top: .2rem; }
+/* 教科書の注記（×、=、for sure など） */
+.tb-note { font-size: .95rem; color: var(--ink-2); }
+.unverified { font-size: .85rem; color: var(--ink-2); }
+
+/* 間違い／正解 */
+.vs { display: grid; gap: 2px; margin: .8rem 0; }
+.vs p { margin: 0; }
+.vs .why { color: var(--ink-2); font-size: .92rem; }
+
+/* 表（4列まで） */
+.tbl { overflow-x: auto; margin: .8rem 0; }
+.tbl table { border-collapse: collapse; min-width: 100%; background: var(--surface); font-size: .92rem; line-height: 1.55; }
+.tbl th, .tbl td { border: 1px solid var(--line); padding: 7px 10px; text-align: left; vertical-align: top; }
+.tbl th { background: var(--chrome-soft); }
+
+/* 会話例 */
+.dlg { margin: .8rem 0; display: grid; gap: 4px; }
+.dlg p { margin: 0; display: grid; grid-template-columns: 1.6em 1fr; }
+.dlg .sp { font-weight: 700; color: var(--ink-2); }
+.dlg .ja { grid-column: 2; color: var(--ink-2); font-size: .9rem; }
+
+/* ---------- 図（幅380px・2列まで・11px以上・色はここだけ） ---------- */
+.fig {
+  max-width: 380px; margin: 1rem 0; padding: 14px; font-family: var(--font); font-size: 13px; line-height: 1.5;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+}
+.fig .fig-title { font-size: 12px; font-weight: 700; color: var(--ink-2); margin-bottom: 8px; letter-spacing: .04em; }
+.fig .grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.fig .grid.two { grid-template-columns: 1fr 1fr; }
+.fig .box { border: 1px solid var(--line); border-left: 4px solid var(--c, var(--line)); border-radius: 6px; padding: 8px 10px; min-width: 0; }
+.fig .lab { font-size: 11px; font-weight: 700; color: var(--c, var(--ink-2)); display: block; }
+.fig .s { font-weight: 700; }
+.fig .note { font-size: 11px; color: var(--ink-2); }
+.fig .hl { color: var(--c); font-weight: 700; }
+.fig .arrow { text-align: center; color: var(--ink-2); font-size: 12px; }
+.fig svg { display: block; width: 100%; height: auto; }
+.fig svg text { fill: var(--ink-2); font-family: var(--font); font-size: 12px; }
+.fig svg .ax { stroke: var(--ink-2); stroke-width: 1.5; fill: none; }
+.fig svg .seg { stroke: var(--c); stroke-width: 6; stroke-linecap: round; fill: none; }
+.fig svg .pt { fill: var(--c); }
+.fig svg text.hl { fill: var(--c); font-weight: 700; }
+.c-blue { --c: var(--blue); }
+.c-purple { --c: var(--purple); }
+.c-green { --c: var(--green); }
+.c-orange { --c: var(--orange); }
+.c-red { --c: var(--red); }
+
+/* ---------- 確認テスト ---------- */
+.quiz { max-width: 380px; margin: 1rem 0; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; font-size: 15px; }
+.quiz .head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz .bar { flex: 1; height: 6px; background: var(--chrome-soft); border-radius: 3px; overflow: hidden; }
+.quiz .bar i { display: block; height: 100%; background: var(--chrome); width: 0; transition: width .25s; }
+.quiz .badge { font-family: var(--font-num); font-weight: 700; font-size: 13px; padding: 2px 10px; border-radius: 999px; background: var(--chrome); color: var(--chrome-ink); font-variant-numeric: tabular-nums; }
+.quiz .qno { font-size: 12px; color: var(--ink-2); font-weight: 700; }
+.quiz .qtext { font-weight: 700; margin: 4px 0 4px; line-height: 1.6; }
+.quiz .hint { font-size: 13px; color: var(--ink-2); margin-bottom: 10px; }
+.quiz .opts { display: grid; gap: 8px; margin-top: 10px; }
+.quiz button { font: inherit; cursor: pointer; }
+.quiz .opt { text-align: left; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.quiz .opt:hover:not(:disabled) { border-color: var(--chrome); }
+.quiz .opt:disabled { cursor: default; }
+.quiz .opt.ok { border-color: var(--green); background: var(--ok-bg); }
+.quiz .opt.ng { border-color: var(--red); background: var(--ng-bg); }
+.quiz .row { display: flex; gap: 8px; margin-top: 10px; }
+.quiz input[type="text"] { flex: 1; min-width: 0; font: inherit; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.quiz input.ok { border-color: var(--green); background: var(--ok-bg); }
+.quiz input.ng { border-color: var(--red); background: var(--ng-bg); }
+.quiz .primary { padding: 9px 16px; border-radius: 8px; border: 0; background: var(--chrome); color: var(--chrome-ink); font-weight: 700; }
+.quiz .secondary { padding: 9px 16px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.quiz .warn { color: var(--red); font-size: 13px; margin-top: 6px; }
+.quiz .result { margin-top: 12px; padding: 10px 12px; border-radius: 8px; background: var(--chrome-soft); font-size: 14px; line-height: 1.65; }
+.quiz .result .verdict { font-weight: 700; display: block; }
+.quiz .result .verdict.ok { color: var(--green); }
+.quiz .result .verdict.ng { color: var(--red); }
+.quiz .nav { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.quiz .score { font-family: var(--font-num); font-size: 2.2rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.quiz .msg { margin: 10px 0; padding: 10px 12px; border: 1px dashed var(--line); border-radius: 8px; font-size: 14px; user-select: all; }
+.quiz .copied { font-size: 13px; color: var(--ink-2); }
+
+.page-end { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding-block: 1rem 3rem; border-top: 1px solid var(--line); }
+
+
+/* ---------- 2026-11-23 追加: ラベル・カード・公式カード・軽い表・使用例 ---------- */
+/* 色付きラベル（本文でも使ってよい。色の意味はユニットの色の対応に従う） */
+.tag {
+  display: inline-block; font-size: .74rem; font-weight: 700; line-height: 1.5; letter-spacing: .02em;
+  padding: 1px 9px; border-radius: 999px; margin-right: .5em; vertical-align: .12em; white-space: nowrap;
+  color: var(--c, var(--ink-2)); background: var(--chrome-soft);
+  background: color-mix(in srgb, var(--c, var(--ink-2)) 16%, transparent);
+}
+.theme { font-weight: 700; }
+
+/* カード（教科書の場面・比較） */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 2px 16px; margin: 1.1rem 0; }
+.card > .card-title { font-weight: 700; padding: 14px 0 4px; }
+.card > .item { padding: 14px 0; border-top: 1px solid var(--line); }
+.card > .card-title + .item { border-top: 0; }
+.card > .item:first-child { border-top: 0; }
+.card .item > * { margin: 0; }
+.card .item .en { display: block; font-weight: 700; margin-top: 4px; }
+.card .item .ja { display: block; }
+.card .item .memo { display: block; font-size: .86rem; margin-top: 2px; }
+/* ランク付きカード（重要度ラベル ＋ 番号つきの題 ＋ 一言の説明） */
+.card.rank > .item { padding: 16px 0; }
+.card.rank .rh { display: flex; align-items: center; gap: 2px; }
+.card.rank .rh b { font-size: 1.02rem; }
+.card.rank .rd { color: var(--ink); margin-top: 8px; }
+/* 予定表のような番号付きの並び */
+.card ol.steps { list-style: none; padding: 6px 0 12px; margin: 0; display: grid; gap: 14px; }
+.card ol.steps li { display: grid; grid-template-columns: 1.6em 1fr; gap: 0 10px; margin: 0; }
+.card ol.steps .n { font-family: var(--font-num); font-weight: 700; color: var(--ink-2); }
+.card ol.steps .when { font-weight: 700; }
+.card ol.steps .body { border-left: 1px solid var(--line); padding-left: 12px; grid-column: 2; }
+
+/* 公式カード */
+.formula-card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; margin: 1.1rem 0; overflow: hidden; }
+.formula-card .big { text-align: center; font-weight: 700; font-size: 1.2rem; color: var(--c, var(--ink)); padding: 16px 12px; border-bottom: 1px solid var(--line); }
+.formula-card .tbl { margin: 0; padding: 4px 16px 0; }
+.formula-card .foot { font-size: .82rem; color: var(--ink-2); padding: 6px 16px 14px; margin: 0; }
+
+/* 縦線のない軽い表 */
+.tbl.plain table { background: transparent; }
+.tbl.plain th, .tbl.plain td { border: 0; border-bottom: 1px solid var(--line); padding: 9px 12px 9px 0; }
+.tbl.plain th { background: transparent; font-size: .88rem; }
+.tbl.plain tr:last-child td { border-bottom: 0; }
+.tbl.plain td:first-child { white-space: nowrap; }
+.tbl.plain td:first-child:not(:only-child) { padding-right: 16px; }
+
+/* 日常会話での使用例 */
+.usage { margin: 1.8rem 0 1.8rem .6rem; padding-left: 1rem; border-left: 2px solid var(--line); }
+.usage .usage-title { font-weight: 700; margin: 0 0 .4rem; }
+.usage p { margin: .15rem 0; }
+.usage .en { font-weight: 400; }
+.usage .ja { color: var(--ink-2); margin-bottom: .5rem; }
+
+/* 例文の落とし穴 */
+.trap { font-size: .95rem; }
+
+/* ---------- 2026-11-23 追加2: 色付き強調と、話題の切れ目の余白 ---------- */
+/* 色付きの太字（色はクラス c-blue などで指定）と、蛍光ペン風のマーカー（時の表現など） */
+.k { font-weight: 700; color: var(--c, inherit); }
+.mk { background: linear-gradient(transparent 58%, var(--mark) 58%); padding: 0 .08em; }
+
+/* 話題が変わる所は余白を大きくとる（枠・引用・箇条書き・表のあとの本文、例文の組と組の間） */
+.panel > .card + p, .panel > blockquote.tb + p, .panel > ul + p, .panel > .usage + p,
+.panel > .formula-card + p, .panel > .tbl + p, .panel > .fig + p, .panel > .vs + p { margin-top: 2.2rem; }
+.panel > p.ja + p.en { margin-top: 2rem; }
+.panel > p.ja + p:not(.ja):not(.en):not(.memo):not(.tb-note) { margin-top: 2rem; }
+.panel > p.theme { margin-top: 2rem; }
+.panel > p.rule, .panel > p.formula { margin-top: 2rem; }
+
+@media (prefers-reduced-motion: reduce) { .quiz .bar i { transition: none; } }
+
+/* 締めの一言（太字）と補足の段落 */
+.panel p.takeaway { font-weight: 700; margin-top: 2.6rem; }
+.card.rank .item:first-of-type .tag { background: var(--ink); color: var(--paper); }

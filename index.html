@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Grammar ノート">
+  <title>英文法ノート</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="wrap masthead">
+    <div class="eyebrow">English Grammar Notes</div>
+    <h1>Grammar ノート</h1>
+    <p>ユニットごとの講義と確認テスト。ユニットを開くと、概要とセクション A・B・C… をタブで切り替えられます。</p>
+    <div class="search">
+      <input id="q" type="search" placeholder="ユニット名・文法用語で検索（例: present perfect, 現在完了）" aria-label="ユニットを検索">
+      <span class="count" id="count"></span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!--
+      ユニットの追加方法（CLAUDE.md 参照）:
+      該当する <section class="group"> の <ol class="units"> に <li> を1つ追加する。グループがなければ section ごと追加する。
+      <li data-keywords="検索用の語">
+        <a href="units/unit-001.html">
+          <span class="num">1</span>
+          <span class="title">Unit title in English</span>
+          <span class="meta"><span class="sum">日本語の一言要約</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+        </a>
+      </li>
+    -->
+    <div id="groups">
+      <section class="group">
+        <h2 class="group-title">Present and past</h2>
+        <ol class="units">
+          <li data-keywords="現在進行形 present continuous 今 途中 変化 -ing">
+            <a href="units/unit-001.html">
+              <span class="num">1</span>
+              <span class="title">Present continuous (I am doing)</span>
+              <span class="meta"><span class="sum">今していることを表す現在進行形</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="現在形 present simple 習慣 三単現 do does 頻度 promise">
+            <a href="units/unit-002.html">
+              <span class="num">2</span>
+              <span class="title">Present simple (I do)</span>
+              <span class="meta"><span class="sum">ふだんのこと・一般的なことを表す現在形</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b><b>E</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="現在進行形 現在形 present continuous present simple 一時的 恒久的 always 比較">
+            <a href="units/unit-003.html">
+              <span class="num">3</span>
+              <span class="title">Present continuous and present simple 1 (I am doing and I do)</span>
+              <span class="meta"><span class="sum">現在進行形と現在形の使い分け</span> <span class="chips"><b>A</b><b>B</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="状態動詞 want know like think see hear being 進行形にしない present continuous present simple">
+            <a href="units/unit-004.html">
+              <span class="num">4</span>
+              <span class="title">Present continuous and present simple 2 (I am doing and I do)</span>
+              <span class="meta"><span class="sum">進行形にしない動詞と、am/is/are being</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="過去形 past simple 規則動詞 不規則動詞 did didn't was were -ed">
+            <a href="units/unit-005.html">
+              <span class="num">5</span>
+              <span class="title">Past simple (I did)</span>
+              <span class="meta"><span class="sum">過去の出来事を表す過去形</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="過去進行形 past continuous was were when while 途中 過去形との比較">
+            <a href="units/unit-006.html">
+              <span class="num">6</span>
+              <span class="title">Past continuous (I was doing)</span>
+              <span class="meta"><span class="sum">過去のある時点で途中だったことを表す過去進行形</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b><b>E</b></span></span>
+            </a>
+          </li>
+        </ol>
+      </section>
+      <section class="group">
+        <h2 class="group-title">Present perfect and past</h2>
+        <ol class="units">
+          <li data-keywords="現在完了 present perfect have done just already yet gone been 過去分詞">
+            <a href="units/unit-007.html">
+              <span class="num">7</span>
+              <span class="title">Present perfect 1 (I have done)</span>
+              <span class="meta"><span class="sum">過去の出来事が今に関係することを表す現在完了</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="現在完了 present perfect ever never recently so far since first time been to 今まで 経験">
+            <a href="units/unit-008.html">
+              <span class="num">8</span>
+              <span class="title">Present perfect 2 (I have done)</span>
+              <span class="meta"><span class="sum">今までの期間を表す現在完了</span> <span class="chips"><b>A</b><b>B</b><b>C</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="現在完了進行形 present perfect continuous have been doing how long for since 活動">
+            <a href="units/unit-009.html">
+              <span class="num">9</span>
+              <span class="title">Present perfect continuous (I have been doing)</span>
+              <span class="meta"><span class="sum">続いている・ついさっき終わった活動を表す現在完了進行形</span> <span class="chips"><b>A</b><b>B</b><b>C</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="現在完了 現在完了進行形 present perfect continuous simple how long how many 活動 結果">
+            <a href="units/unit-010.html">
+              <span class="num">10</span>
+              <span class="title">Present perfect continuous and simple (I have been doing and I have done)</span>
+              <span class="meta"><span class="sum">活動に注目するか、結果に注目するか</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="how long 現在完了 現在完了進行形 for since live work always haven't 期間">
+            <a href="units/unit-011.html">
+              <span class="num">11</span>
+              <span class="title">how long have you (been) … ?</span>
+              <span class="meta"><span class="sum">続いている期間を聞く・言う現在完了</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="for since when how long 現在完了 過去形 期間 it's since">
+            <a href="units/unit-012.html">
+              <span class="num">12</span>
+              <span class="title">for and since / when … ? and how long … ?</span>
+              <span class="meta"><span class="sum">for と since の使い分け、when と how long</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="現在完了 過去形 present perfect past simple new information 新しい情報 lost found">
+            <a href="units/unit-013.html">
+              <span class="num">13</span>
+              <span class="title">Present perfect and past 1 (I have done and I did)</span>
+              <span class="meta"><span class="sum">現在完了と過去形の使い分け</span> <span class="chips"><b>A</b><b>B</b><b>C</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="現在完了 過去形 yesterday ago last when what time finished unfinished 終わった時間">
+            <a href="units/unit-014.html">
+              <span class="num">14</span>
+              <span class="title">Present perfect and past 2 (I have done and I did)</span>
+              <span class="meta"><span class="sum">終わった時間の話は過去形、続く期間の話は現在完了</span> <span class="chips"><b>A</b><b>B</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="過去完了 past perfect had done 大過去 before already 過去より前">
+            <a href="units/unit-015.html">
+              <span class="num">15</span>
+              <span class="title">Past perfect (I had done)</span>
+              <span class="meta"><span class="sum">過去のある時点より前に起きたことを表す過去完了</span> <span class="chips"><b>A</b><b>B</b><b>C</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="過去完了進行形 past perfect continuous had been doing 現在完了進行形 過去進行形">
+            <a href="units/unit-016.html">
+              <span class="num">16</span>
+              <span class="title">Past perfect continuous (I had been doing)</span>
+              <span class="meta"><span class="sum">過去のある時点までしていたことを表す過去完了進行形</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="have have got 所有 have breakfast have a shower do you have 疑問文 否定文">
+            <a href="units/unit-017.html">
+              <span class="num">17</span>
+              <span class="title">have and have got</span>
+              <span class="meta"><span class="sum">持っている・状態の have と、動作の have</span> <span class="chips"><b>A</b><b>B</b><b>C</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="used to 昔 習慣 did you use to didn't use to be used to 過去の習慣">
+            <a href="units/unit-018.html">
+              <span class="num">18</span>
+              <span class="title">used to (do)</span>
+              <span class="meta"><span class="sum">昔はよくしていた・昔はそうだったを表す used to</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b><b>E</b><b>F</b></span></span>
+            </a>
+          </li>
+        </ol>
+      </section>
+      <section class="group">
+        <h2 class="group-title">Future</h2>
+        <ol class="units">
+          <li data-keywords="未来 予定 現在進行形 現在形 present continuous present simple future arrangement 手配 時刻表 timetable">
+            <a href="units/unit-019.html">
+              <span class="num">19</span>
+              <span class="title">Present tenses (I am doing / I do) for the future</span>
+              <span class="meta"><span class="sum">現在時制で未来を表す</span> <span class="chips"><b>A</b><b>B</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="be going to 意図 予定 予測 was going to 未来 決めている">
+            <a href="units/unit-020.html">
+              <span class="num">20</span>
+              <span class="title">(I'm) going to (do)</span>
+              <span class="meta"><span class="sum">決めている意図・今の状況から分かる未来の be going to</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="will 'll won't shall 決定 申し出 約束 依頼 拒否 Shall I Shall we">
+            <a href="units/unit-021.html">
+              <span class="num">21</span>
+              <span class="title">will/shall 1</span>
+              <span class="meta"><span class="sum">その場で決めたことを伝える will と、shall I / shall we</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="will 予測 probably sure think I hope wonder shall shan't 未来">
+            <a href="units/unit-022.html">
+              <span class="num">22</span>
+              <span class="title">will/shall 2</span>
+              <span class="meta"><span class="sum">未来の予測を表す will と、I shall / we shall</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="未来 will be going to 決定 予測 意志 future decision prediction">
+            <a href="units/unit-023.html">
+              <span class="num">23</span>
+              <span class="title">I will and I'm going to</span>
+              <span class="meta"><span class="sum">will と be going to</span> <span class="chips"><b>A</b><b>B</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="未来進行形 未来完了 will be doing will have done future continuous future perfect">
+            <a href="units/unit-024.html">
+              <span class="num">24</span>
+              <span class="title">will be doing and will have done</span>
+              <span class="meta"><span class="sum">未来のある時点で途中のこと・終わっていること</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="when if before after until as soon as while 時を表す節 条件 現在形 現在完了 未来">
+            <a href="units/unit-025.html">
+              <span class="num">25</span>
+              <span class="title">when I do and when I've done / if and when</span>
+              <span class="meta"><span class="sum">未来のことでも when / if のあとは現在形</span> <span class="chips"><b>A</b><b>B</b><b>C</b></span></span>
+            </a>
+          </li>
+        </ol>
+      </section>
+      <section class="group">
+        <h2 class="group-title">Modals</h2>
+        <ol class="units">
+          <li data-keywords="can could be able to managed to 能力 可能 許可 過去の能力 成功">
+            <a href="units/unit-026.html">
+              <span class="num">26</span>
+              <span class="title">can, could and (be) able to</span>
+              <span class="meta"><span class="sum">できる・してよいの can と、過去の could・was able to</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="could could have couldn't 提案 可能性 非現実 過去の可能性 しなかったこと">
+            <a href="units/unit-027.html">
+              <span class="num">27</span>
+              <span class="title">could (do) and could have (done)</span>
+              <span class="meta"><span class="sum">提案・可能性・非現実の could と、過去の could have</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b><b>E</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="must can't 推量 確信 must have can't have couldn't have にちがいない はずがない">
+            <a href="units/unit-028.html">
+              <span class="num">28</span>
+              <span class="title">must and can't</span>
+              <span class="meta"><span class="sum">〜にちがいない・〜のはずがない</span> <span class="chips"><b>A</b><b>B</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="may might maybe may have might have could 可能性 かもしれない 推量">
+            <a href="units/unit-029.html">
+              <span class="num">29</span>
+              <span class="title">may and might 1</span>
+              <span class="meta"><span class="sum">〜かもしれない（今・過去の可能性）</span> <span class="chips"><b>A</b><b>B</b><b>C</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="may might 未来 可能性 might be -ing 非現実 might as well may as well">
+            <a href="units/unit-030.html">
+              <span class="num">30</span>
+              <span class="title">may and might 2</span>
+              <span class="meta"><span class="sum">未来の可能性の may / might と might as well</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="have to must had to mustn't don't have to have got to 義務 必要 禁止">
+            <a href="units/unit-031.html">
+              <span class="num">31</span>
+              <span class="title">have to and must</span>
+              <span class="meta"><span class="sum">〜しなければならない（have to と must の違い）</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="must mustn't needn't don't need to needn't have didn't need to 禁止 不要 しなくてよかった">
+            <a href="units/unit-032.html">
+              <span class="num">32</span>
+              <span class="title">must mustn't needn't</span>
+              <span class="meta"><span class="sum">禁止の mustn't、不要の needn't、needn't have done</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="should shouldn't should have ought to 助言 意見 当然 期待 後悔">
+            <a href="units/unit-033.html">
+              <span class="num">33</span>
+              <span class="title">should 1</span>
+              <span class="meta"><span class="sum">〜したほうがいい・〜のはず・〜すべきだったのに</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="should insist suggest recommend demand 仮定法現在 subjunctive strange surprised if should I should">
+            <a href="units/unit-034.html">
+              <span class="num">34</span>
+              <span class="title">should 2</span>
+              <span class="meta"><span class="sum">insist / suggest のあとの should、仮定の should、助言の I should</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b><b>E</b><b>F</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="had better 'd better should it's time it's about time 過去形 警告 不満">
+            <a href="units/unit-035.html">
+              <span class="num">35</span>
+              <span class="title">I'd better … / it's time …</span>
+              <span class="meta"><span class="sum">〜したほうがいい（しないと困る）、もう〜する時間だ</span> <span class="chips"><b>A</b><b>B</b><b>C</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="would would have wouldn't 想像 仮定 will の過去 拒否 過去の習慣 used to">
+            <a href="units/unit-036.html">
+              <span class="num">36</span>
+              <span class="title">would</span>
+              <span class="meta"><span class="sum">想像の would、will の過去の would、過去の習慣の would</span> <span class="chips"><b>A</b><b>B</b><b>C</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="Can you Could you Can I Could I May I Do you mind if Would you like I'd like 依頼 申し出 許可 誘い ていねい">
+            <a href="units/unit-037.html">
+              <span class="num">37</span>
+              <span class="title">can/could/would you … ? etc. (Requests, offers, permission and invitations)</span>
+              <span class="meta"><span class="sum">Could you …? / Can I have …? / May I …? / Would you like …?</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+        </ol>
+      </section>
+      <section class="group">
+        <h2 class="group-title">If and wish</h2>
+        <ol class="units">
+          <li data-keywords="if 条件 仮定法 if I did would 想像 現実 if I do will if + 過去形 could might">
+            <a href="units/unit-038.html">
+              <span class="num">38</span>
+              <span class="title">if I do … and if I did …</span>
+              <span class="meta"><span class="sum">実際にありうる if と、想像の if</span> <span class="chips"><b>A</b><b>B</b><b>C</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="if I knew I wish I knew 仮定法過去 wish 後悔 were was would could 想像 現在の事実と違う">
+            <a href="units/unit-039.html">
+              <span class="num">39</span>
+              <span class="title">if I knew … I wish I knew …</span>
+              <span class="meta"><span class="sum">今の事実と違うことの想像（if + 過去形、wish + 過去形）</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b><b>E</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="if I had known I wish I had known 仮定法過去完了 had done would have done wish 後悔 過去 would have could have might have">
+            <a href="units/unit-040.html">
+              <span class="num">40</span>
+              <span class="title">if I had known … I wish I had known …</span>
+              <span class="meta"><span class="sum">過去の事実と違うことの想像（if + had + 過去分詞、wish + had + 過去分詞）</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="wish hope I wish I could I wish would I wish you wouldn't 後悔 不満 願い 幸運を祈る">
+            <a href="units/unit-041.html">
+              <span class="num">41</span>
+              <span class="title">wish</span>
+              <span class="meta"><span class="sum">wish の4つの使い方（幸運を祈る・後悔・I wish I could・I wish … would）</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b><b>E</b></span></span>
+            </a>
+          </li>
+        </ol>
+      </section>
+      <section class="group">
+        <h2 class="group-title">Passive</h2>
+        <ol class="units">
+          <li data-keywords="passive 受け身 受動態 is done was done by be + 過去分詞 active 能動態 present simple past simple">
+            <a href="units/unit-042.html">
+              <span class="num">42</span>
+              <span class="title">Passive 1 (is done / was done)</span>
+              <span class="meta"><span class="sum">受け身の意味と、現在形・過去形の受け身</span> <span class="chips"><b>A</b><b>B</b><b>C</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="passive 受け身 be done been done being done will be must be has been had been is being 完了 進行形">
+            <a href="units/unit-043.html">
+              <span class="num">43</span>
+              <span class="title">Passive 2 (be done / been done / being done)</span>
+              <span class="meta"><span class="sum">不定詞・完了・進行形の受け身</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="passive 受け身 I was given I was offered being done was born get hurt get invited 目的語2つ">
+            <a href="units/unit-044.html">
+              <span class="num">44</span>
+              <span class="title">Passive 3</span>
+              <span class="meta"><span class="sum">目的語が2つある動詞の受け身、being done、was born、get の受け身</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="it is said that he is said to supposed to believed known expected reported alleged 〜と言われている 〜することになっている ニュース 受け身">
+            <a href="units/unit-045.html">
+              <span class="num">45</span>
+              <span class="title">it is said that … / he is said to … / he is supposed to …</span>
+              <span class="meta"><span class="sum">「〜と言われている」「〜することになっている」</span> <span class="chips"><b>A</b><b>B</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="have something done get something done have the roof repaired have your hair cut 〜してもらう 〜される 使役 受け身 手配">
+            <a href="units/unit-046.html">
+              <span class="num">46</span>
+              <span class="title">have something done</span>
+              <span class="meta"><span class="sum">人に〜してもらう、〜される</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+        </ol>
+      </section>
+      <section class="group">
+        <h2 class="group-title">Reported speech</h2>
+        <ol class="units">
+          <li data-keywords="reported speech direct speech 間接話法 直接話法 said that told 時制の一致 past perfect">
+            <a href="units/unit-047.html">
+              <span class="num">47</span>
+              <span class="title">Reported speech 1 (he said that …)</span>
+              <span class="meta"><span class="sum">人が言ったことを伝える言い方と、時制の変化</span> <span class="chips"><b>A</b><b>B</b><b>C</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="reported speech 間接話法 say tell ask tell somebody to 時制 still true told me that">
+            <a href="units/unit-048.html">
+              <span class="num">48</span>
+              <span class="title">Reported speech 2</span>
+              <span class="meta"><span class="sum">時制を変えなくてよい場合、say と tell の違い、依頼・命令の伝え方</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+        </ol>
+      </section>
+      <section class="group">
+        <h2 class="group-title">Questions</h2>
+        <ol class="units">
+          <li data-keywords="questions 疑問文 語順 do does did who what subject object preposition negative question isn't it didn't you Why don't">
+            <a href="units/unit-049.html">
+              <span class="num">49</span>
+              <span class="title">Questions 1</span>
+              <span class="meta"><span class="sum">疑問文の語順、do / does / did、who が主語のとき、否定の疑問文</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="indirect questions embedded question Do you know where Could you tell me if whether reported questions asked wanted to know 語順 間接疑問文">
+            <a href="units/unit-050.html">
+              <span class="num">50</span>
+              <span class="title">Questions 2 (do you know where … ? / he asked me where …)</span>
+              <span class="meta"><span class="sum">文の一部になった疑問文の語順、間接話法の疑問文</span> <span class="chips"><b>A</b><b>B</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="auxiliary verbs 助動詞 Yes I have So am I Neither do I I think so I hope so I'm afraid so I hope not 省略">
+            <a href="units/unit-051.html">
+              <span class="num">51</span>
+              <span class="title">Auxiliary verbs (have/do/can etc.) / I think so / I hope so etc.</span>
+              <span class="meta"><span class="sum">繰り返しを避ける助動詞、Have you? で関心を示す、so / neither、I think so</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="question tags 付加疑問 isn't it don't you shall we will you aren't I 声の調子 同意 確認">
+            <a href="units/unit-052.html">
+              <span class="num">52</span>
+              <span class="title">Question tags (do you? isn't it? etc.)</span>
+              <span class="meta"><span class="sum">文の最後に付ける短い疑問、肯定と否定の組み合わせ、声の上げ下げ</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+        </ol>
+      </section>
+      <section class="group">
+        <h2 class="group-title">-ing and to …</h2>
+        <ol class="units">
+          <li data-keywords="verb + -ing enjoy mind suggest stop finish avoid give up put off go on keep admit deny having done 動名詞 -ing形">
+            <a href="units/unit-053.html">
+              <span class="num">53</span>
+              <span class="title">Verb + -ing (enjoy doing / stop doing etc.)</span>
+              <span class="meta"><span class="sum">-ing が続く動詞、人 + -ing、having done、that 節との言いかえ</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b><b>E</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="verb + to infinitive decide to forget to agree manage fail promise dare seem pretend claim how to what to to不定詞 to + 原形">
+            <a href="units/unit-054.html">
+              <span class="num">54</span>
+              <span class="title">Verb + to … (decide to … / forget to … etc.)</span>
+              <span class="meta"><span class="sum">to + 原形が続く動詞、dare、seem / pretend、疑問詞 + to …</span> <span class="chips"><b>A</b><b>B</b><b>C</b><b>D</b></span></span>
+            </a>
+          </li>
+          <li data-keywords="verb object to want you to tell advise warn allow make let help 人 + to不定詞 make somebody do let somebody do be made to">
+            <a href="units/unit-055.html">
+              <span class="num">55</span>
+              <span class="title">Verb (+ object) + to … (I want you to …)</span>
+              <span class="meta"><span class="sum">want / expect / ask + 人 + to …、tell / advise + 人 + to …、make / let + 人 + 原形</span> <span class="chips"><b>A</b><b>B</b><b>C</b></span></span>
+            </a>
+          </li>
+        </ol>
+      </section>
+    </div>
+
+    <div class="empty" id="empty">
+      <strong>まだユニットがありません。</strong><br>
+      教材の写真を送ると、ここにユニットが追加されていきます。
+      ページの見た目は <a href="units/_sample.html">見本ユニット</a> で確認できます。
+    </div>
+    <p class="empty" id="nohit" hidden>該当するユニットがありません。</p>
+  </main>
+
+  <footer class="wrap footer">
+    個人の学習用ノートです。教科書の例文と短い引用を含むため、本人以外は見られない設定で運用します。
+  </footer>
+
+  <script>
+    (function () {
+      const items = Array.from(document.querySelectorAll('.units li'));
+      const groups = Array.from(document.querySelectorAll('section.group'));
+      const q = document.getElementById('q');
+      const count = document.getElementById('count');
+      document.getElementById('empty').hidden = items.length > 0;
+      q.closest('.search').hidden = items.length === 0;
+      function filter() {
+        const words = q.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+        let n = 0;
+        items.forEach((li) => {
+          const text = (li.textContent + ' ' + (li.dataset.keywords || '')).toLowerCase();
+          const hit = words.every((w) => text.includes(w));
+          li.hidden = !hit;
+          if (hit) n++;
+        });
+        groups.forEach((g) => { g.hidden = !g.querySelector('.units li:not([hidden])'); });
+        count.textContent = words.length ? n + ' / ' + items.length + ' units' : items.length + ' units';
+        document.getElementById('nohit').hidden = !(items.length && n === 0);
+      }
+      q.addEventListener('input', filter);
+      filter();
+    })();
+  </script>
+</body>
+</html>

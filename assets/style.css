@@ -280,3 +280,10 @@ blockquote.tb cite { display: block; font-style: normal; font-size: .78rem; colo
 .to-top { position: fixed; right: max(14px, env(safe-area-inset-right, 0px)); bottom: max(14px, env(safe-area-inset-bottom, 0px)); width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--chrome-soft); color: var(--chrome); font-size: 1.25rem; line-height: 1; cursor: pointer; z-index: 50; }
 .to-top:hover { background: var(--line); }
 .to-top[hidden] { display: none; }
+
+/* タイトルロゴ（太い大文字ゴシックの積み文字） */
+.masthead h1.logo { display: flex; flex-direction: column; gap: 0; margin: 0 0 1rem; font-family: 'Archivo Black', 'Arial Black', 'Helvetica Neue', Impact, sans-serif; font-weight: 900; line-height: .92; letter-spacing: -.01em; text-transform: uppercase; }
+.logo .l1 { font-size: clamp(1.1rem, 4.4vw, 1.5rem); letter-spacing: .32em; color: var(--ink-2); }
+.logo .l2 { font-size: clamp(2.6rem, 13vw, 4.6rem); color: #fff; }
+.logo .l3 { font-size: clamp(2.6rem, 13vw, 4.6rem); color: #e5484d; }
+.logo .l3 i { font-style: normal; font-size: .45em; letter-spacing: .08em; color: #fff; margin-right: .15em; }

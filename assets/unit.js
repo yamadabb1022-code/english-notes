@@ -188,3 +188,18 @@
     start();
   });
 })();
+
+// ページ上部へ戻るボタン（一覧ページでも使う。index.html からも読み込む）
+(function () {
+  var b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'to-top';
+  b.setAttribute('aria-label', 'ページの上部へ戻る');
+  b.textContent = '↑';
+  b.hidden = true;
+  b.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  document.body.appendChild(b);
+  function sync() { b.hidden = window.scrollY < 400; }
+  window.addEventListener('scroll', sync, { passive: true });
+  sync();
+})();

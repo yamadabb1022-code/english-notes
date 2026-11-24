@@ -77,59 +77,63 @@
     return 'まだ定着していません。このセクションを読み直してから、もう一度解いてください。';
   }
 
-  // 全問を並べて、最後に採点する
+  // セクションごとに問題を並べて、セクションごとに採点する
   function renderAll(root, body, qs, unit) {
     root.classList.add('all');
-    const cards = [], getters = [];
-    let lastSec = null;
-    qs.forEach((q, i) => {
-      if (q.sec !== lastSec) { lastSec = q.sec; body.appendChild(el('h3', 'qsec', 'Section ' + q.sec)); }
-      const card = el('div', 'qcard');
-      card.appendChild(el('div', 'qno', '問' + (i + 1) + (q.review ? '（復習）' : '')));
-      card.appendChild(el('div', 'qtext', q.q));
-      if (q.hint) card.appendChild(el('div', 'hint', q.hint));
-      let get;
-      if (q.type === 'choice') {
-        const opts = el('div', 'opts'); let sel = -1;
-        const btns = q.choices.map((c, k) => {
-          const b = el('button', 'opt', ['a', 'b', 'c', 'd'][k] + '. ' + c); b.type = 'button';
-          b.addEventListener('click', () => { sel = k; btns.forEach((x, j) => x.classList.toggle('sel', j === k)); });
-          opts.appendChild(b); return b;
-        });
-        card.appendChild(opts);
-        get = { ok: () => sel === q.answer, mark: (ok) => { btns.forEach((x) => { x.disabled = true; }); btns[q.answer].classList.add('ok'); if (sel >= 0 && !ok) btns[sel].classList.add('ng'); }, reset: () => { sel = -1; btns.forEach((x) => { x.disabled = false; x.className = 'opt'; }); }, show: null };
-      } else {
-        const inp = el('input'); inp.type = 'text'; inp.autocomplete = 'off'; inp.spellcheck = false; inp.setAttribute('autocapitalize', 'off'); inp.setAttribute('aria-label', '答え');
-        card.appendChild(inp);
-        get = { ok: () => !!inp.value.trim() && matches(inp.value, q.answers), mark: (ok) => { inp.readOnly = true; inp.classList.add(ok ? 'ok' : 'ng'); }, reset: () => { inp.value = ''; inp.readOnly = false; inp.className = ''; }, show: '正解: ' + q.answers[0] };
-      }
-      const res = el('div', 'result'); res.hidden = true; card.appendChild(res);
-      get.res = res; get.q = q;
-      body.appendChild(card); cards.push(card); getters.push(get);
-    });
-    const out = el('div', 'final'); const nav = el('div', 'nav');
-    const grade = el('button', 'primary', '採点する'); grade.type = 'button';
-    const again = el('button', 'secondary', 'やり直す'); again.type = 'button'; again.hidden = true;
-    nav.append(again, grade); body.append(nav, out);
-    grade.addEventListener('click', () => {
-      let score = 0; const wrong = [];
-      getters.forEach((g, i) => {
-        const ok = g.ok(); if (ok) score++; else wrong.push(i + 1);
-        g.mark(ok); g.res.hidden = false; g.res.replaceChildren();
-        g.res.appendChild(el('span', 'verdict ' + (ok ? 'ok' : 'ng'), ok ? '正解' : '不正解'));
-        if (!ok && g.show) g.res.appendChild(el('div', null, g.show));
-        g.res.appendChild(document.createTextNode(g.q.explain));
+    const secs = [];
+    qs.forEach((q) => { let g = secs.find((x) => x.sec === q.sec); if (!g) { g = { sec: q.sec, qs: [] }; secs.push(g); } g.qs.push(q); });
+    secs.forEach((g) => {
+      const wrap = el('div', 'qgroup');
+      wrap.appendChild(el('h3', 'qsec', 'Section ' + g.sec));
+      const items = [];
+      g.qs.forEach((q, i) => {
+        const card = el('div', 'qcard');
+        card.appendChild(el('div', 'qno', '問' + (i + 1) + (q.review ? '（復習）' : '')));
+        card.appendChild(el('div', 'qtext', q.q));
+        if (q.hint) card.appendChild(el('div', 'hint', q.hint));
+        let get;
+        if (q.type === 'choice') {
+          const opts = el('div', 'opts'); let sel = -1;
+          const btns = q.choices.map((c, k) => {
+            const b = el('button', 'opt', ['a', 'b', 'c', 'd'][k] + '. ' + c); b.type = 'button';
+            b.addEventListener('click', () => { sel = k; btns.forEach((x, j) => x.classList.toggle('sel', j === k)); });
+            opts.appendChild(b); return b;
+          });
+          card.appendChild(opts);
+          get = { ok: () => sel === q.answer, mark: (ok) => { btns.forEach((x) => { x.disabled = true; }); btns[q.answer].classList.add('ok'); if (sel >= 0 && !ok) btns[sel].classList.add('ng'); }, reset: () => { sel = -1; btns.forEach((x) => { x.disabled = false; x.className = 'opt'; }); }, show: null };
+        } else {
+          const inp = el('input'); inp.type = 'text'; inp.autocomplete = 'off'; inp.spellcheck = false; inp.setAttribute('autocapitalize', 'off'); inp.setAttribute('aria-label', '答え');
+          card.appendChild(inp);
+          get = { ok: () => !!inp.value.trim() && matches(inp.value, q.answers), mark: (ok) => { inp.readOnly = true; inp.classList.add(ok ? 'ok' : 'ng'); }, reset: () => { inp.value = ''; inp.readOnly = false; inp.className = ''; }, show: '正解: ' + q.answers[0] };
+        }
+        const res = el('div', 'result'); res.hidden = true; card.appendChild(res);
+        get.res = res; get.q = q;
+        wrap.appendChild(card); items.push(get);
       });
-      grade.hidden = true; again.hidden = false;
-      let text = 'Unit ' + unit + ' の確認テストは ' + score + ' / ' + qs.length + ' でした。';
-      if (wrong.length) text += '\n間違えた問題: ' + wrong.map((n) => '問' + n).join('、');
-      out.replaceChildren(el('div', 'score', score + ' / ' + qs.length + ' 点'), el('p', null, comment(score, qs.length)));
-      const msg = el('div', 'msg', text); msg.style.whiteSpace = 'pre-line'; out.appendChild(msg);
-      out.scrollIntoView({ block: 'center' });
-    });
-    again.addEventListener('click', () => {
-      getters.forEach((g) => { g.reset(); g.res.hidden = true; });
-      out.replaceChildren(); grade.hidden = false; again.hidden = true; window.scrollTo(0, 0);
+      const out = el('div', 'final'); const nav = el('div', 'nav');
+      const grade = el('button', 'primary', 'Section ' + g.sec + ' を採点する'); grade.type = 'button';
+      const again = el('button', 'secondary', 'やり直す'); again.type = 'button'; again.hidden = true;
+      nav.append(again, grade); wrap.append(nav, out); body.appendChild(wrap);
+      grade.addEventListener('click', () => {
+        let score = 0; const wrong = [];
+        items.forEach((x, i) => {
+          const ok = x.ok(); if (ok) score++; else wrong.push(i + 1);
+          x.mark(ok); x.res.hidden = false; x.res.replaceChildren();
+          x.res.appendChild(el('span', 'verdict ' + (ok ? 'ok' : 'ng'), ok ? '正解' : '不正解'));
+          if (!ok && x.show) x.res.appendChild(el('div', null, x.show));
+          x.res.appendChild(document.createTextNode(x.q.explain));
+        });
+        grade.hidden = true; again.hidden = false;
+        let text = 'Unit ' + unit + ' の Section ' + g.sec + ' のテスト結果は ' + score + ' / ' + items.length + ' でした。';
+        if (wrong.length) text += '\n間違えた問題: ' + wrong.map((n) => '問' + n).join('、');
+        out.replaceChildren(el('div', 'score', score + ' / ' + items.length + ' 点'), el('p', null, comment(score, items.length)));
+        const msg = el('div', 'msg', text); msg.style.whiteSpace = 'pre-line'; out.appendChild(msg);
+        out.scrollIntoView({ block: 'center' });
+      });
+      again.addEventListener('click', () => {
+        items.forEach((x) => { x.reset(); x.res.hidden = true; });
+        out.replaceChildren(); grade.hidden = false; again.hidden = true; wrap.scrollIntoView({ block: 'start' });
+      });
     });
   }
 

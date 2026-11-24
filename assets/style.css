@@ -301,3 +301,6 @@ blockquote.tb cite { display: block; font-style: normal; font-size: .78rem; colo
 .tbl td a { color: var(--ink); text-decoration: underline; }
 .sgscore { white-space: nowrap; color: var(--ink-2); }
 .sgscore.done { color: var(--green); font-weight: 700; }
+.tabs.hidebar { display: none; }
+.backlink { margin: .6rem 0; }
+.backlink a { color: var(--ink); }

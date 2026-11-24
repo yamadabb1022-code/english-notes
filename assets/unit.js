@@ -82,7 +82,11 @@
     root.classList.add('all');
     const secs = [];
     qs.forEach((q) => { let g = secs.find((x) => x.sec === q.sec); if (!g) { g = { sec: q.sec, qs: [] }; secs.push(g); } g.qs.push(q); });
+    const SK = (sec) => 'giu:t:' + unit + ':' + sec;
+    const sload = (sec) => { try { return JSON.parse(localStorage.getItem(SK(sec)) || 'null') || { a: {}, graded: false }; } catch (e) { return { a: {}, graded: false }; } };
+    const ssave = (sec, st) => { try { localStorage.setItem(SK(sec), JSON.stringify(st)); } catch (e) {} };
     secs.forEach((g) => {
+      const st = sload(g.sec);
       const wrap = el('div', 'qgroup');
       wrap.appendChild(el('h3', 'qsec', 'Section ' + g.sec));
       const items = [];
@@ -93,16 +97,19 @@
         if (q.hint) card.appendChild(el('div', 'hint', q.hint));
         let get;
         if (q.type === 'choice') {
-          const opts = el('div', 'opts'); let sel = -1;
+          const opts = el('div', 'opts'); let sel = (typeof st.a[i] === 'number') ? st.a[i] : -1;
           const btns = q.choices.map((c, k) => {
             const b = el('button', 'opt', ['a', 'b', 'c', 'd'][k] + '. ' + c); b.type = 'button';
-            b.addEventListener('click', () => { sel = k; btns.forEach((x, j) => x.classList.toggle('sel', j === k)); });
+            b.addEventListener('click', () => { sel = k; btns.forEach((x, j) => x.classList.toggle('sel', j === k)); st.a[i] = k; ssave(g.sec, st); });
+            if (sel === k) b.classList.add('sel');
             opts.appendChild(b); return b;
           });
           card.appendChild(opts);
           get = { ok: () => sel === q.answer, mark: (ok) => { btns.forEach((x) => { x.disabled = true; }); btns[q.answer].classList.add('ok'); if (sel >= 0 && !ok) btns[sel].classList.add('ng'); }, reset: () => { sel = -1; btns.forEach((x) => { x.disabled = false; x.className = 'opt'; }); }, show: null };
         } else {
           const inp = el('input'); inp.type = 'text'; inp.autocomplete = 'off'; inp.spellcheck = false; inp.setAttribute('autocapitalize', 'off'); inp.setAttribute('aria-label', '答え');
+          if (typeof st.a[i] === 'string') inp.value = st.a[i];
+          inp.addEventListener('input', () => { st.a[i] = inp.value; ssave(g.sec, st); });
           card.appendChild(inp);
           get = { ok: () => !!inp.value.trim() && matches(inp.value, q.answers), mark: (ok) => { inp.readOnly = true; inp.classList.add(ok ? 'ok' : 'ng'); }, reset: () => { inp.value = ''; inp.readOnly = false; inp.className = ''; }, show: '正解: ' + q.answers[0] };
         }
@@ -114,7 +121,7 @@
       const grade = el('button', 'primary', 'Section ' + g.sec + ' を採点する'); grade.type = 'button';
       const again = el('button', 'secondary', 'やり直す'); again.type = 'button'; again.hidden = true;
       nav.append(again, grade); wrap.append(nav, out); body.appendChild(wrap);
-      grade.addEventListener('click', () => {
+      function doGrade() {
         let score = 0; const wrong = [];
         items.forEach((x, i) => {
           const ok = x.ok(); if (ok) score++; else wrong.push(i + 1);
@@ -128,12 +135,15 @@
         if (wrong.length) text += '\n間違えた問題: ' + wrong.map((n) => '問' + n).join('、');
         out.replaceChildren(el('div', 'score', score + ' / ' + items.length + ' 点'), el('p', null, comment(score, items.length)));
         const msg = el('div', 'msg', text); msg.style.whiteSpace = 'pre-line'; out.appendChild(msg);
-        out.scrollIntoView({ block: 'center' });
-      });
+        st.graded = true; ssave(g.sec, st);
+      }
+      grade.addEventListener('click', () => { doGrade(); out.scrollIntoView({ block: 'center' }); });
       again.addEventListener('click', () => {
         items.forEach((x) => { x.reset(); x.res.hidden = true; });
         out.replaceChildren(); grade.hidden = false; again.hidden = true; wrap.scrollIntoView({ block: 'start' });
+        st.a = {}; st.graded = false; ssave(g.sec, st);
       });
+      if (st.graded) doGrade();
     });
   }
 

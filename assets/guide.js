@@ -3,20 +3,25 @@
   const data = JSON.parse(document.getElementById('sgdata').textContent);
   function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   const pad = (n) => ('00' + n).slice(-3);
+  const KEY = (no) => 'giu:sg:' + no;
+  function load(no) { try { return JSON.parse(localStorage.getItem(KEY(no)) || 'null') || { sel: {}, graded: false }; } catch (e) { return { sel: {}, graded: false }; } }
+  function save(no, st) { try { localStorage.setItem(KEY(no), JSON.stringify(st)); } catch (e) {} }
   data.forEach((ch) => {
     const root = document.querySelector('.sg[data-ch="' + ch.no + '"]');
     if (!root) return;
     root.classList.add('quiz', 'all');
     const items = [];
+    const st = load(ch.no);
     ch.q.forEach((q) => {
       const card = el('div', 'qcard');
       card.appendChild(el('div', 'qno', q.id + (q.ans.length > 1 ? '（正解は複数）' : '')));
       card.appendChild(el('div', 'qtext', q.text));
-      const sel = new Set();
+      const sel = new Set(st.sel[q.id] || []);
       const opts = el('div', 'opts');
       const btns = q.options.map((o) => {
         const b = el('button', 'opt', o[0] + '. ' + o[1]); b.type = 'button';
-        b.addEventListener('click', () => { if (sel.has(o[0])) sel.delete(o[0]); else sel.add(o[0]); b.classList.toggle('sel', sel.has(o[0])); });
+        b.addEventListener('click', () => { if (sel.has(o[0])) sel.delete(o[0]); else sel.add(o[0]); b.classList.toggle('sel', sel.has(o[0])); st.sel[q.id] = Array.from(sel); save(ch.no, st); });
+        if (sel.has(o[0])) b.classList.add('sel');
         opts.appendChild(b); return b;
       });
       card.appendChild(opts);
@@ -28,7 +33,7 @@
     const grade = el('button', 'primary', '採点する'); grade.type = 'button';
     const again = el('button', 'secondary', 'やり直す'); again.type = 'button'; again.hidden = true;
     nav.append(again, grade); root.append(nav, out);
-    grade.addEventListener('click', () => {
+    function doGrade() {
       let score = 0; const wrong = [];
       items.forEach((it) => {
         const ans = it.q.ans, ok = ans.length === it.sel.size && ans.every((a) => it.sel.has(a));
@@ -56,11 +61,14 @@
       if (need.length) text += '\n復習するユニット: ' + need.map((u) => 'Unit ' + u).join('、');
       const msg = el('div', 'msg', text); msg.style.whiteSpace = 'pre-line';
       out.replaceChildren(el('div', 'score', score + ' / ' + items.length + ' 点'), msg);
-      out.scrollIntoView({ block: 'center' });
-    });
+      st.graded = true; save(ch.no, st);
+    }
+    grade.addEventListener('click', () => { doGrade(); out.scrollIntoView({ block: 'center' }); });
     again.addEventListener('click', () => {
       items.forEach((it) => { it.sel.clear(); it.btns.forEach((b) => { b.disabled = false; b.className = 'opt'; }); it.res.hidden = true; });
       out.replaceChildren(); grade.hidden = false; again.hidden = true; window.scrollTo(0, 0);
+      st.sel = {}; st.graded = false; save(ch.no, st);
     });
+    if (st.graded) doGrade();
   });
 })();

@@ -293,3 +293,7 @@ blockquote.tb cite { display: block; font-style: normal; font-size: .78rem; colo
 .quiz.all .qcard { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; margin: 10px 0; }
 .quiz .opt.sel { border-color: var(--chrome); background: var(--chrome-soft); }
 .quiz.all .final { margin-top: 12px; }
+.sg-link { margin: 1rem 0 0; }
+.sg-link a { display: block; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); text-decoration: none; font-size: .92rem; }
+.sg-link a:hover { background: var(--chrome-soft); }
+.quiz .result a { color: var(--ink); text-decoration: underline; }

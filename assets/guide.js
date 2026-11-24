@@ -6,6 +6,13 @@
   const KEY = (no) => 'giu:sg:' + no;
   function load(no) { try { return JSON.parse(localStorage.getItem(KEY(no)) || 'null') || { sel: {}, graded: false }; } catch (e) { return { sel: {}, graded: false }; } }
   function save(no, st) { try { localStorage.setItem(KEY(no), JSON.stringify(st)); } catch (e) {} }
+  function refresh(no) {
+    const cell = document.querySelector('.sgscore[data-ch="' + no + '"]'); if (!cell) return;
+    const st = load(no);
+    if (st.graded && typeof st.score === 'number') { cell.textContent = st.score + ' / ' + st.total + ' 点'; cell.className = 'sgscore done'; }
+    else if (Object.keys(st.sel || {}).some((k) => st.sel[k].length)) { cell.textContent = '回答中'; cell.className = 'sgscore'; }
+    else { cell.textContent = '未回答'; cell.className = 'sgscore'; }
+  }
   data.forEach((ch) => {
     const root = document.querySelector('.sg[data-ch="' + ch.no + '"]');
     if (!root) return;
@@ -20,7 +27,7 @@
       const opts = el('div', 'opts');
       const btns = q.options.map((o) => {
         const b = el('button', 'opt', o[0] + '. ' + o[1]); b.type = 'button';
-        b.addEventListener('click', () => { if (sel.has(o[0])) sel.delete(o[0]); else sel.add(o[0]); b.classList.toggle('sel', sel.has(o[0])); st.sel[q.id] = Array.from(sel); save(ch.no, st); });
+        b.addEventListener('click', () => { if (sel.has(o[0])) sel.delete(o[0]); else sel.add(o[0]); b.classList.toggle('sel', sel.has(o[0])); st.sel[q.id] = Array.from(sel); save(ch.no, st); refresh(ch.no); });
         if (sel.has(o[0])) b.classList.add('sel');
         opts.appendChild(b); return b;
       });
@@ -61,14 +68,15 @@
       if (need.length) text += '\n復習するユニット: ' + need.map((u) => 'Unit ' + u).join('、');
       const msg = el('div', 'msg', text); msg.style.whiteSpace = 'pre-line';
       out.replaceChildren(el('div', 'score', score + ' / ' + items.length + ' 点'), msg);
-      st.graded = true; save(ch.no, st);
+      st.graded = true; st.score = score; st.total = items.length; save(ch.no, st); refresh(ch.no);
     }
     grade.addEventListener('click', () => { doGrade(); out.scrollIntoView({ block: 'center' }); });
     again.addEventListener('click', () => {
       items.forEach((it) => { it.sel.clear(); it.btns.forEach((b) => { b.disabled = false; b.className = 'opt'; }); it.res.hidden = true; });
       out.replaceChildren(); grade.hidden = false; again.hidden = true; window.scrollTo(0, 0);
-      st.sel = {}; st.graded = false; save(ch.no, st);
+      st.sel = {}; st.graded = false; delete st.score; save(ch.no, st); refresh(ch.no);
     });
     if (st.graded) doGrade();
+    refresh(ch.no);
   });
 })();

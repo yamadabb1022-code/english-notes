@@ -297,3 +297,7 @@ blockquote.tb cite { display: block; font-style: normal; font-size: .78rem; colo
 .sg-link a { display: block; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); text-decoration: none; font-size: .92rem; }
 .sg-link a:hover { background: var(--chrome-soft); }
 .quiz .result a { color: var(--ink); text-decoration: underline; }
+
+.tbl td a { color: var(--ink); text-decoration: underline; }
+.sgscore { white-space: nowrap; color: var(--ink-2); }
+.sgscore.done { color: var(--green); font-weight: 700; }

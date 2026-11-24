@@ -287,3 +287,9 @@ blockquote.tb cite { display: block; font-style: normal; font-size: .78rem; colo
 .logo .l2 { font-size: clamp(2.6rem, 13vw, 4.6rem); color: #fff; }
 .logo .l3 { font-size: clamp(2.6rem, 13vw, 4.6rem); color: #e5484d; }
 .logo .l3 i { font-style: normal; font-size: .45em; letter-spacing: .08em; color: #fff; margin-right: .15em; }
+
+.quiz.all { max-width: 560px; background: none; border: 0; padding: 0; }
+.quiz.all .qsec { margin: 1.4rem 0 .4rem; }
+.quiz.all .qcard { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; margin: 10px 0; }
+.quiz .opt.sel { border-color: var(--chrome); background: var(--chrome-soft); }
+.quiz.all .final { margin-top: 12px; }

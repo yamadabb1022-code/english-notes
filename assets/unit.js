@@ -71,10 +71,66 @@
     return e;
   }
   function comment(n, total) {
-    if (n === total) return '全問正解です。このまま次のセクションへ進めます。';
+    if (n === total) return '全問正解です。';
     if (n >= total - 2) return 'おおむね理解できています。間違えた問題の解説を読み直してから進みましょう。';
     if (n >= Math.ceil(total / 2) - 1) return '半分ほどの理解です。基本ルールと教科書の例文をもう一度確認してください。';
     return 'まだ定着していません。このセクションを読み直してから、もう一度解いてください。';
+  }
+
+  // 全問を並べて、最後に採点する
+  function renderAll(root, body, qs, unit) {
+    root.classList.add('all');
+    const cards = [], getters = [];
+    let lastSec = null;
+    qs.forEach((q, i) => {
+      if (q.sec !== lastSec) { lastSec = q.sec; body.appendChild(el('h3', 'qsec', 'Section ' + q.sec)); }
+      const card = el('div', 'qcard');
+      card.appendChild(el('div', 'qno', '問' + (i + 1) + (q.review ? '（復習）' : '')));
+      card.appendChild(el('div', 'qtext', q.q));
+      if (q.hint) card.appendChild(el('div', 'hint', q.hint));
+      let get;
+      if (q.type === 'choice') {
+        const opts = el('div', 'opts'); let sel = -1;
+        const btns = q.choices.map((c, k) => {
+          const b = el('button', 'opt', ['a', 'b', 'c', 'd'][k] + '. ' + c); b.type = 'button';
+          b.addEventListener('click', () => { sel = k; btns.forEach((x, j) => x.classList.toggle('sel', j === k)); });
+          opts.appendChild(b); return b;
+        });
+        card.appendChild(opts);
+        get = { ok: () => sel === q.answer, mark: (ok) => { btns.forEach((x) => { x.disabled = true; }); btns[q.answer].classList.add('ok'); if (sel >= 0 && !ok) btns[sel].classList.add('ng'); }, reset: () => { sel = -1; btns.forEach((x) => { x.disabled = false; x.className = 'opt'; }); }, show: null };
+      } else {
+        const inp = el('input'); inp.type = 'text'; inp.autocomplete = 'off'; inp.spellcheck = false; inp.setAttribute('autocapitalize', 'off'); inp.setAttribute('aria-label', '答え');
+        card.appendChild(inp);
+        get = { ok: () => !!inp.value.trim() && matches(inp.value, q.answers), mark: (ok) => { inp.readOnly = true; inp.classList.add(ok ? 'ok' : 'ng'); }, reset: () => { inp.value = ''; inp.readOnly = false; inp.className = ''; }, show: '正解: ' + q.answers[0] };
+      }
+      const res = el('div', 'result'); res.hidden = true; card.appendChild(res);
+      get.res = res; get.q = q;
+      body.appendChild(card); cards.push(card); getters.push(get);
+    });
+    const out = el('div', 'final'); const nav = el('div', 'nav');
+    const grade = el('button', 'primary', '採点する'); grade.type = 'button';
+    const again = el('button', 'secondary', 'やり直す'); again.type = 'button'; again.hidden = true;
+    nav.append(again, grade); body.append(nav, out);
+    grade.addEventListener('click', () => {
+      let score = 0; const wrong = [];
+      getters.forEach((g, i) => {
+        const ok = g.ok(); if (ok) score++; else wrong.push(i + 1);
+        g.mark(ok); g.res.hidden = false; g.res.replaceChildren();
+        g.res.appendChild(el('span', 'verdict ' + (ok ? 'ok' : 'ng'), ok ? '正解' : '不正解'));
+        if (!ok && g.show) g.res.appendChild(el('div', null, g.show));
+        g.res.appendChild(document.createTextNode(g.q.explain));
+      });
+      grade.hidden = true; again.hidden = false;
+      let text = 'Unit ' + unit + ' の確認テストは ' + score + ' / ' + qs.length + ' でした。';
+      if (wrong.length) text += '\n間違えた問題: ' + wrong.map((n) => '問' + n).join('、');
+      out.replaceChildren(el('div', 'score', score + ' / ' + qs.length + ' 点'), el('p', null, comment(score, qs.length)));
+      const msg = el('div', 'msg', text); msg.style.whiteSpace = 'pre-line'; out.appendChild(msg);
+      out.scrollIntoView({ block: 'center' });
+    });
+    again.addEventListener('click', () => {
+      getters.forEach((g) => { g.reset(); g.res.hidden = true; });
+      out.replaceChildren(); grade.hidden = false; again.hidden = true; window.scrollTo(0, 0);
+    });
   }
 
   document.querySelectorAll('.quiz').forEach((root) => {
@@ -84,6 +140,7 @@
     const unit = root.dataset.unit, sec = root.dataset.section, next = root.dataset.next;
     const body = el('div');
     root.appendChild(body);
+    if (root.dataset.all) { renderAll(root, body, qs, root.dataset.unit); return; }
     let i, score, wrong;
 
     function start() { i = 0; score = 0; wrong = []; render(); }
